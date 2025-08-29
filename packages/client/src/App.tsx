@@ -1,15 +1,18 @@
-import { useHealth } from "./shared/hooks/useHealth"
+import { Button } from "@/shared/components/ui/button"
+import { useHealth } from "@/shared/hooks/useHealth"
 
 function App() {
   const { checkHealth } = useHealth()
 
   const onCheckHealth = async () => {
     const data = await checkHealth()
-    console.log('message: ', data.running)
+    console.log('status: ', data.running)
   }
 
   return (
-    <button onClick={() => onCheckHealth()}>Req</button>
+    <div className="absolute inset-0 flex items-center justify-center bg-amber-100">
+      <Button onClick={() => onCheckHealth()}>Req</Button>
+    </div>
   )
 }
 

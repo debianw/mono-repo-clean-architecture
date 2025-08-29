@@ -1,4 +1,4 @@
-import { apiGet } from "client/src/shared/services/api"
+import { apiGet } from "@/shared/services/api"
 
 export const useHealth = () => {
   const checkHealth = async () => {
