@@ -1,4 +1,4 @@
-import Config from 'client/src/config'
+import Config from 'client/src/config';
 
 export interface ApiRequestConfig extends RequestInit {
   params?: Record<string, unknown>;
@@ -17,18 +17,21 @@ const BASE_URL = Config.api || '';
 
 function buildUrl(url: string, params?: Record<string, unknown>): string {
   if (!params) return BASE_URL + url;
-  const search = new URLSearchParams(params as Record<string, string>).toString();
+  const search = new URLSearchParams(
+    params as Record<string, string>
+  ).toString();
   return `${BASE_URL}${url}${search ? `?${search}` : ''}`;
 }
 
-async function handleResponse<T>(response: Response, config: ApiRequestConfig): Promise<ApiResponse<T>> {
+async function handleResponse<T>(
+  response: Response,
+  config: ApiRequestConfig
+): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type');
-  let data: T;
-  if (contentType && contentType.includes('application/json')) {
-    data = await response.json() as T;
-  } else {
-    data = (await response.text()) as unknown as T;
-  }
+  const data: T =
+    contentType && contentType.includes('application/json')
+      ? ((await response.json()) as T)
+      : ((await response.text()) as unknown as T);
   return {
     data,
     status: response.status,

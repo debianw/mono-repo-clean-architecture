@@ -1,13 +1,13 @@
 type Config = {
-  port: number
+  port: number;
   openai: {
-    key: string
-  }
-}
+    key: string;
+  };
+};
 
 export default {
   port: process.env.PORT || 4000,
   openai: {
-    key: process.env.OPENAI_KEY
-  }
-} as Config
+    key: process.env.OPENAI_KEY,
+  },
+} as Config;
