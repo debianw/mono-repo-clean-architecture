@@ -2,61 +2,74 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Commands
+
+### Install dependencies
+
+```bash
+bun install
+```
+
+### Root workspace commands
+
+- **Linting**: `bun run lint` (check) or `bun run lint:fix` (auto-fix)
+- **Formatting**: `bun run format` (write) or `bun run format:check` (check)
+- **Run root script**: `bun run index.ts`
+
+### Client (React + Vite)
+
+Navigate to `packages/client/` and run:
+
+- **Development**: `bun run dev` (starts Vite dev server with API proxy)
+- **Build**: `bun run build` (TypeScript compilation + Vite build)
+- **Preview**: `bun run preview` (preview production build)
+
+### Server (Express + Bun)
+
+Navigate to `packages/server/` and run:
+
+- **Development**: `bun run dev` (watch mode)
+- **Production**: `bun run start`
+
 ## Architecture
 
-This is a monorepo with a React/TypeScript client-server architecture:
+This is a monorepo with two packages managed by Bun workspaces:
 
-- **Root**: Bun workspace with basic TypeScript entry point (`index.ts`)
-- **packages/client/**: React frontend using Vite, TypeScript, and Tailwind CSS with shadcn/ui components
-- **packages/server/**: Express.js backend running on Bun with TypeScript
+### Client (`packages/client/`)
 
-The client communicates with the server via API calls (see `/api/health` endpoint example).
+- **Framework**: React 19 + Vite + TypeScript
+- **Styling**: TailwindCSS v4 with Radix UI components
+- **State Management**: React hooks (no external state library)
+- **API Layer**: Custom fetch-based service (`src/shared/services/api.ts`) with typed responses
+- **Path Aliases**: `@/` maps to `./src/`
 
-## Development Commands
+Key directories:
 
-**Root level:**
+- `src/shared/components/ui/` - Reusable UI components (Button, etc.)
+- `src/shared/hooks/` - Custom React hooks (useHealth)
+- `src/shared/services/` - API layer and external services
+- `src/config/` - Environment-based configuration
 
-```bash
-bun install        # Install all dependencies
-bun run index.ts   # Run root entry point
-```
+### Server (`packages/server/`)
 
-**Client (packages/client/):**
+- **Runtime**: Bun with Express.js
+- **TypeScript**: Configured for bundler resolution
+- **API**: REST endpoints (`/api/health`)
+- **Config**: Environment variables via `config/index.ts`
 
-```bash
-bun run dev        # Start development server (Vite)
-bun run build      # Build for production (TypeScript + Vite)
-bun run lint       # Run ESLint
-bun run preview    # Preview production build
-```
+### Development Setup
 
-**Server (packages/server/):**
+- **Proxy**: Client dev server proxies `/api` calls to `localhost:4000`
+- **Environment**: Server expects `PORT` and `OPENAI_KEY` env vars
+- **Code Quality**: ESLint + Prettier with TypeScript, React hooks rules
+- **Git Hooks**: Husky configured for pre-commit checks
 
-```bash
-bun run dev        # Start development server with watch mode
-bun run start      # Start production server
-```
+### Import Patterns
 
-## Runtime Preferences
+- Client uses path aliases: `import { Button } from '@/shared/components/ui/button'`
+- Server uses package imports: `import Config from 'server/config'`
+- Both packages maintain separate TypeScript configs with shared root config
+- 1. I missed the static keyword
 
-- **Use Bun instead of Node.js** for all runtime operations
-- Server uses Express.js but the existing CLAUDE.md in packages/server/ suggests preferring Bun.serve() for new development
-- Client uses standard React/Vite stack with modern tooling
-
-## Key Technologies
-
-- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS 4, shadcn/ui, Radix UI
-- **Backend**: Express.js, TypeScript, Bun runtime
-- **Build Tools**: Vite (client), Bun (server), ESLint
-- **Styling**: Tailwind CSS with custom components in `shared/components/ui/`
-
-## Client Architecture
-
-- Shared utilities in `src/shared/`: components, hooks, services, styles
-- API communication handled via `src/shared/services/api.ts`
-- UI components from shadcn/ui in `src/shared/components/ui/`
-- Custom hooks like `useHealth` for API integration
-
-## Testing
-
-Use `bun test` for testing across the monorepo.
+2. Option A should be the right to create a MessageContent\
+3. I think I should store zod's trim value

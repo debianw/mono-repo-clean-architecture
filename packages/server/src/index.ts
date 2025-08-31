@@ -1,10 +1,12 @@
 import express, { type Request, type Response } from 'express';
-import Config from 'server/config';
+import Config from '@/config';
+import { chatController } from '@/modules/chat';
 
 const app = express();
 
+app.use(express.json());
+
 app.get('/', (req: Request, res: Response) => {
-  console.log('key', Config.openai);
   res.send('ok...');
 });
 
@@ -13,6 +15,8 @@ app.get('/api/health', (req: Request, res: Response) => {
     running: 'ok',
   });
 });
+
+app.use('/api', chatController);
 
 app.listen(Config.port, () => {
   console.log(`Service listening on port ${Config.port}`);

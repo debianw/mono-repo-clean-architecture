@@ -1,0 +1,3 @@
+[module]
+# Configure path aliases for Bun runtime
+"@/*" = "./src/*"
