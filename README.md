@@ -83,11 +83,22 @@ cd packages/client && bun run dev  # Frontend on :5173
 
 ### Environment Variables
 
+Copy the example files and configure your environment:
+
 ```bash
-# packages/server/.env
-PORT=4000
-OPENAI_KEY=your_openai_api_key_here
+# Server environment
+cp packages/server/.env.example packages/server/.env
+# Edit packages/server/.env with your OpenAI API key
+
+# Client environment (optional)
+cp packages/client/.env.example packages/client/.env
+# Edit if you need custom API URL for production
 ```
+
+**Required environment variables:**
+
+- `OPENAI_KEY`: Your OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys)
+- `PORT`: Server port (default: 4000)
 
 ## 🛠️ Development Commands
 
